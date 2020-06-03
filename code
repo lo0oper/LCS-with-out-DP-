@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<string > pile;
+int  match(int i , string s1, string &s2, string &ans,int &max){
+    if(i==s1.length()){ 
+        return i ;
+    }
+    else{
+        for(int j = 0 ; j<s2.length() ;j++){
+            if(s1[i] == s2[j]){
+                ans.append(1,s1[i]);
+               // cout<<"ans after match "<<ans;  // LCS being build up . 
+				pile.push_back(ans);
+				if(ans.length() > max){
+					max=ans.length();
+				}
+                //max=max+1;
+                string ns = s2.substr(j+1,s2.length());
+                s2= ns;
+                i = match(i+1,s1,ns,ans,max);
+               // ans.pop_back();
+                return i ;
+            }
+        }
+        return i;
+    }
+}
+int main() {
+    int t ;    
+    cin>>t;
+    while(t--){
+        int l1,l2,i=0,max=0,last=0;
+        cin>>l1>>l2;
+        string s1,s2,ans;
+        cin>>s1>>s2;
+        if(l1>l2){
+            while(i <l1 && max!=l2){
+                i = match(i,s1,s2,ans,max);
+                //cout<<"ans for "<<s1[i]<<"is "<<ans<<endl;
+                last =i;
+                i++;
+            }
+        }
+        else{ 
+            while(i <l2 && max!=l1){
+                i = match(i,s2,s1,ans,max);
+                //cout<<"ans for "<<s1[i]<<"is "<<ans<<endl;
+                last=i;
+                i++;
+            }
+        }
+        
+        
+        cout<<"Longest common Subsequence "<<max<<endl;
+    }
+	return 0;
+}
